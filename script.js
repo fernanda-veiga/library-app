@@ -1,6 +1,12 @@
 const container = document.querySelector(".main-container");
 let myLibrary = [];
 
+//Form variables
+const formTitle = document.querySelector("#title");
+const formAuthor = document.querySelector("#author");
+const formPages = document.querySelector("#pages");
+const formRead = document.querySelector("#read");
+
 //Book object constructor
 function Book(title, author, pages, read) {
     this.title = title;
@@ -18,10 +24,10 @@ function Book(title, author, pages, read) {
 }
 
 function addBookToLibrary() {
-    title = prompt("What is the book title?");
-    author = prompt("Who is the book author?");
-    pages = prompt("How many pages are there in the book?");
-    read = prompt("Have you read the book?");
+    title = formTitle.value;
+    author = formAuthor.value;
+    pages = formPages.value;
+    read = formRead.value;
     myLibrary.push(new Book(title, author, pages, read));
 }
 
@@ -35,8 +41,8 @@ function displayBooks() {
 }
 
 //New Book button
-let newBookBtn = document.querySelector(".new-book-btn");
-let popupForm = document.querySelector(".popup-form")
+const newBookBtn = document.querySelector(".new-book-btn");
+const popupForm = document.querySelector(".popup-form")
 
 newBookBtn.addEventListener("click", function() {
     if (popupForm.style.display == "none") {
@@ -57,4 +63,20 @@ function closeForm() {
     popupForm.style.display = "none";
     newBookBtn.classList.remove("close-btn");
     newBookBtn.textContent = "Add a New Book";
+}
+
+//Form button
+const formBtn = document.querySelector(".form-btn");
+
+formBtn.addEventListener("click", function() {
+    addBookToLibrary();
+    initializeForm();
+    displayBooks();
+});
+
+function initializeForm() {
+    formTitle.value = "";
+    formAuthor.value = "";
+    formPages.value = "";
+    formRead.value = "yes";
 }

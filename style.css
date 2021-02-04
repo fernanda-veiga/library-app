@@ -88,7 +88,7 @@ header {
     justify-content: flex-end;
 }
 
-label, input, select {
+label, input, select, .form-btn {
     font-family: 'Merriweather', serif;
     outline: none;
 }
@@ -106,10 +106,10 @@ input, select {
     font-size: 14px;
 }
 
-#submit {
+.form-btn {
     background-color: #5CA4A9;
     border: none;
-    margin-bottom: 0;
+    padding: 10px;
     color: #E6EBE0;
     font-size: 16px;
     font-weight: 700;
