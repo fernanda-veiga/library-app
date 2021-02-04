@@ -15,15 +15,21 @@ function Book(title, author, pages, read) {
     this.read = read;
     this.info = function() {
         if (this.read == "yes") {
-            return `${this.title} by ${this.author}, ${this.pages} pages, completed`;
+            return `<b>Title:</b> ${this.title}<br><br>
+            <b>Author:</b> ${this.author}<br><br>
+            <b>No of Pages:</b> ${this.pages} page(s)<br><br>
+            The book is completed`;
         }
         else {
-            return `${this.title} by ${this.author}, ${this.pages} pages, not completed`;
+            return `<b>Title:</b> ${this.title}<br><br>
+            <b>Author:</b> ${this.author}<br><br>
+            <b>No of Pages:</b> ${this.pages} page(s)<br><br>
+            The book is not completed`;
         } 
     }
 }
 
-myLibrary.push(new Book("Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "no"));
+myLibrary.push(new Book("Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "yes"));
 displayBooks();
 
 function addBookToLibrary() {
@@ -39,7 +45,8 @@ function displayBooks() {
         item.node = document.createElement("div");
         item.node.classList.add("book-container");
         item.text = document.createElement("p");
-        item.text.textContent = item.info();
+        item.text.classList.add("book-text");
+        item.text.innerHTML = item.info();
         item.node.appendChild(item.text);
         container.appendChild(item.node);
         addDeleteBtn(item);
@@ -92,7 +99,7 @@ function initializeForm() {
 function addDeleteBtn(item) {
     item.deleteBtn = document.createElement("button");
     item.deleteBtn.classList.add("delete-btn");
-    item.deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    item.deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> &nbsp; Delete';
     item.node.appendChild(item.deleteBtn);
 
     //Add event listener
@@ -110,8 +117,15 @@ function addDeleteEvent(item) {
 //Completed button
 function addCompleteBtn(item) {
     item.completeBtn = document.createElement("button");
-    item.completeBtn.classList.add("delete-btn");
-    item.completeBtn.innerHTML = '<i class="fas fa-check"></i>';
+    item.completeBtn.classList.add("complete-btn");
+
+    if (item.read == "no") {
+        incomplete(item);
+    }
+    else {
+        completed(item);
+    }
+
     item.node.appendChild(item.completeBtn);
 
     //Add event listener
@@ -121,13 +135,25 @@ function addCompleteBtn(item) {
 function addCompleteEvent(item) {
     item.completeBtn.addEventListener("click", function() {
         if (item.read == "no") {
+            console.log("yes")
             item.read = "yes";
-            console.log(item.read);
+            completed(item);
         }
         else {
+            console.log("no")
             item.read = "no";
-            console.log(item.read);
+            incomplete(item);
         }
-        item.text.textContent = item.info();
+        item.text.innerHTML = item.info();
     })
+}
+
+function completed(item) {
+    item.completeBtn.style.backgroundColor = "lightgray";
+    item.completeBtn.innerHTML = '<i class="fas fa-check"></i> &nbsp; Completed!'
+}
+
+function incomplete(item) {
+    item.completeBtn.style.backgroundColor = "#5CA4A9";
+    item.completeBtn.innerHTML = '<i class="fas fa-check"></i> &nbsp; Complete';
 }
