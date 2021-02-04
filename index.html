@@ -11,9 +11,24 @@
 </head>
 <body>
     <header>
-        <p class="logo">
-            <i class="fas fa-book"></i> Library App
-        </p>
+        <p class="logo"><i class="fas fa-book"></i> Library App</p>
+        <button class="new-book-btn" type="button">Add a New Book</button>
+        <div class="popup-form">
+            <form>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title">
+                <label for="author">Author:</label>
+                <input type="text" id="author" name="author">
+                <label for="pages">No of Pages:</label>
+                <input type="text" id="pages" name="pages">
+                <label for="read">Book Status:</label>
+                <select id="read" name="read">
+                    <option value="yes">I have completed</option>
+                    <option value="no">I haven't completed</option>
+                </select>
+                <input type="submit" id="submit" value="Add New Book">
+            </form>
+        </div>
     </header>
     <main>
         <div class="main-container">
@@ -29,9 +44,6 @@
                     <p class="title">Read:</p>
                     <p class="text"> 0/309</p>
                 </div>
-            </div>
-            <div id="btn-container" class="book-container">
-                <button class="new-book-btn" type="button"><i class="fas fa-plus"></i></button>
             </div>
         </div>
     </main>

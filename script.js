@@ -33,3 +33,28 @@ function displayBooks() {
         container.appendChild(item.node);
     })
 }
+
+//New Book button
+let newBookBtn = document.querySelector(".new-book-btn");
+let popupForm = document.querySelector(".popup-form")
+
+newBookBtn.addEventListener("click", function() {
+    if (popupForm.style.display == "none") {
+        openForm();
+    }
+    else {
+        closeForm();
+    }
+})
+
+function openForm() {
+    popupForm.style.display = "block";
+    newBookBtn.classList.add("close-btn");
+    newBookBtn.textContent = "Close";
+}
+
+function closeForm() {
+    popupForm.style.display = "none";
+    newBookBtn.classList.remove("close-btn");
+    newBookBtn.textContent = "Add a New Book";
+}
