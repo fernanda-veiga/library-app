@@ -1,3 +1,4 @@
+const container = document.querySelector(".main-container");
 let myLibrary = [];
 
 //Book object constructor
@@ -22,4 +23,13 @@ function addBookToLibrary() {
     pages = prompt("How many pages are there in the book?");
     read = prompt("Have you read the book?");
     myLibrary.push(new Book(title, author, pages, read));
+}
+
+function displayBooks() {
+    myLibrary.forEach(item => {
+        item.node = document.createElement("div");
+        item.node.classList.add("book-container");
+        item.node.textContent = item.info();
+        container.appendChild(item.node);
+    })
 }
