@@ -9,6 +9,7 @@ const formRead = document.querySelector("#read");
 
 //Book object constructor
 function Book(title, author, pages, read) {
+    this.img = '<i class="fas fa-book"></i>'
     this.title = title;
     this.author = author;
     this.pages = pages;
