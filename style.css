@@ -3,3 +3,22 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: #E6EBE0;
+}
+
+header {
+    width: 100vw;
+    padding: 30px 50px;
+    box-shadow: 0 0 2px gray;
+}
+
+.logo {
+    color: #B82714;
+    font-family: 'Merriweather', serif;
+    font-size: 2em;
+    font-weight: 700;
+}
