@@ -138,6 +138,10 @@ main {
     border: 1px solid lightgray;
     border-radius: 5px;
     box-shadow: 0 0 5px gray;
+    /*Display*/
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .book-container img {
@@ -164,6 +168,17 @@ main {
 .text {
     font-family: 'Merriweather', serif;
     font-size: 14px;
+}
+
+.delete-btn {
+    width: 2em;
+    height: 2em;
+    background-color: #B82714;
+    border: none;
+    color: #E6EBE0;
+    font-size: 1em;
+    outline: none;
+    cursor: pointer;
 }
 
 /*NEW BOOK BUTTON*/

@@ -37,6 +37,7 @@ function displayBooks() {
         item.node.classList.add("book-container");
         item.node.textContent = item.info();
         container.appendChild(item.node);
+        addDeleteBtn(item);
     })
 }
 
@@ -79,4 +80,23 @@ function initializeForm() {
     formAuthor.value = "";
     formPages.value = "";
     formRead.value = "yes";
+}
+
+//Delete button
+function addDeleteBtn(item) {
+    item.deleteBtn = document.createElement("button");
+    item.deleteBtn.classList.add("delete-btn");
+    item.deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    item.node.appendChild(item.deleteBtn);
+
+    //Add event listener
+    addDeleteEvent(item);
+}
+
+function addDeleteEvent(item) {
+    item.deleteBtn.addEventListener("click", function() {
+        index = myLibrary.indexOf(item);
+        container.removeChild(item.node);
+        myLibrary.splice(index, 1);
+    })
 }
