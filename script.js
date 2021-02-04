@@ -23,6 +23,9 @@ function Book(title, author, pages, read) {
     }
 }
 
+myLibrary.push(new Book("Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "no"));
+displayBooks();
+
 function addBookToLibrary() {
     title = formTitle.value;
     author = formAuthor.value;
@@ -35,9 +38,12 @@ function displayBooks() {
     myLibrary.forEach(item => {
         item.node = document.createElement("div");
         item.node.classList.add("book-container");
-        item.node.textContent = item.info();
+        item.text = document.createElement("p");
+        item.text.textContent = item.info();
+        item.node.appendChild(item.text);
         container.appendChild(item.node);
         addDeleteBtn(item);
+        addCompleteBtn(item);
     })
 }
 
@@ -98,5 +104,30 @@ function addDeleteEvent(item) {
         index = myLibrary.indexOf(item);
         container.removeChild(item.node);
         myLibrary.splice(index, 1);
+    })
+}
+
+//Completed button
+function addCompleteBtn(item) {
+    item.completeBtn = document.createElement("button");
+    item.completeBtn.classList.add("delete-btn");
+    item.completeBtn.innerHTML = '<i class="fas fa-check"></i>';
+    item.node.appendChild(item.completeBtn);
+
+    //Add event listener
+    addCompleteEvent(item);
+}
+
+function addCompleteEvent(item) {
+    item.completeBtn.addEventListener("click", function() {
+        if (item.read == "no") {
+            item.read = "yes";
+            console.log(item.read);
+        }
+        else {
+            item.read = "no";
+            console.log(item.read);
+        }
+        item.text.textContent = item.info();
     })
 }
