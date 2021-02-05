@@ -54,31 +54,34 @@ header {
     color: #E6EBE0;
 }
 
-.close-btn {
-    width: 280px;
-    background-color: #B82714;
-    border: 0.2em solid #B82714;
-    color: #E6EBE0;
-    z-index: 1;
-}
-
-.close-btn:hover {
-    background-color: #B82714;
-}
-
 /*Popup form*/
-.popup-form {
-    /*Container*/
-    width: 20em;
-    background-color: #E6EBE0;
-    box-shadow: 0 0 2px gray;
-    padding: 80px 20px 20px 20px;
+
+.transparent {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
     /*Initially hidden*/
     display: none;
     /*Position*/
     position: fixed;
-    top: 10px;
-    right: 30px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup-form {
+    /*Container*/
+    width: 50vw;
+    background-color: #E6EBE0;
+    box-shadow: 0 0 2px gray;
+    padding: 20px;
+    /*Initially hidden*/
+    display: none;
+    /*Position*/
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     z-index: 0;
 }
 
@@ -86,6 +89,17 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+}
+
+.close-btn {
+    align-self: flex-end;
+    background-color: #E6EBE0;
+    border: none;
+    color: #5CA4A9;
+    font-size: 18px;
+    /*Button settings*/
+    cursor: pointer;
+    outline: none;
 }
 
 label, input, select, .form-btn {

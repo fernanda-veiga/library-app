@@ -60,27 +60,21 @@ function displayBook() {
 
 //New Book button
 const newBookBtn = document.querySelector(".new-book-btn");
-const popupForm = document.querySelector(".popup-form")
+const popupForm = document.querySelector(".popup-form");
+const formBackground = document.querySelector(".transparent");
+const closeFormBtn = document.querySelector(".close-btn");
 
-newBookBtn.addEventListener("click", function() {
-    if (popupForm.style.display == "none") {
-        openForm();
-    }
-    else {
-        closeForm();
-    }
-})
+newBookBtn.addEventListener("click", openForm);
+closeFormBtn.addEventListener("click", closeForm);
 
 function openForm() {
     popupForm.style.display = "block";
-    newBookBtn.classList.add("close-btn");
-    newBookBtn.textContent = "Close";
+    formBackground.style.display = "block";
 }
 
 function closeForm() {
     popupForm.style.display = "none";
-    newBookBtn.classList.remove("close-btn");
-    newBookBtn.textContent = "Add a New Book";
+    formBackground.style.display = "none";
 }
 
 //Form button
