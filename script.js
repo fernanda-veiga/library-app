@@ -114,7 +114,7 @@ function displayBook() {
 function addDeleteBtn(item) {
     item.deleteBtn = document.createElement("button");
     item.deleteBtn.classList.add("delete-btn");
-    item.deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> &nbsp; Delete';
+    item.deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
     item.node.appendChild(item.deleteBtn);
 
     //Add event listener
@@ -132,8 +132,8 @@ function addDeleteEvent(item) {
 //Edit button
 function addEditBtn(item) {
     item.editBtn = document.createElement("button");
-    item.editBtn.classList.add("delete-btn");
-    item.editBtn.innerHTML = '<i class="fas fa-edit"></i> &nbsp; Edit';
+    item.editBtn.classList.add("edit-btn");
+    item.editBtn.innerHTML = '<i class="fas fa-edit"></i>';
     item.node.appendChild(item.editBtn);
 
     //Add event listener
@@ -157,7 +157,6 @@ function addEditEvent(item) {
         formEditBtn.addEventListener("click", function() {
             editBook(item, formImg.value, formTitle.value, formAuthor.value, formPages.value, formRead.value);
         })
-        
     })
 }
 
@@ -206,12 +205,12 @@ function addCompleteEvent(item) {
 
 function completed(item) {
     item.completeBtn.style.backgroundColor = "lightgray";
-    item.completeBtn.innerHTML = '<i class="fas fa-check"></i> &nbsp; Completed!'
+    item.completeBtn.innerHTML = '<i class="fas fa-times"></i>'
 }
 
 function incomplete(item) {
     item.completeBtn.style.backgroundColor = "#5CA4A9";
-    item.completeBtn.innerHTML = '<i class="fas fa-check"></i> &nbsp; Complete';
+    item.completeBtn.innerHTML = '<i class="fas fa-check"></i>';
 }
 
 //Library Log
