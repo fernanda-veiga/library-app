@@ -32,7 +32,7 @@ header {
 
 .new-book-btn {
     /*Container*/
-    width: 280px;
+    width: 200px;
     background-color: #DBE0D5;
     border: 0.2em solid #5CA4A9;
     /*border-radius: 2em;*/
@@ -140,42 +140,50 @@ main {
     width: 80vw;
     padding: 50px;
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
 /*BOOK CONTAINER*/
 .book-container {
-    width: 20em;
-    height: 20em;
+    width: 300px;
+    height: 450px;
     margin: 10px;
-    padding: 15px;
+    padding: 10px;
     border: 1px solid lightgray;
     border-radius: 5px;
     box-shadow: 0 0 5px gray;
     /*Display*/
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 3fr 1fr;
     grid-gap: 10px;
 }
 
-/*.book-container img {
+.book-container img, .book-container #no-img {
     width: 100%;
-    height: 60%;
-    object-fit: cover;
-    margin-bottom: 15px;
+    height: 200px;
     border-radius: 5px;
-}*/
+    object-fit: cover;
+    grid-column: 1/3;
+}
 
-.book-text {
+.book-container #no-img {
+    color: #5CA4A9;
+    font-size: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-container p {
     font-family: 'Merriweather', serif;
-    font-size: 14px;
+    font-size: 13px;
     grid-column: 1/3;
 }
 
 .delete-btn, .complete-btn {
     width: 100%;
-    height: 60%;
+    height: 40px;
     border: none;
     color: #E6EBE0;
     font-family: 'Merriweather', serif;
@@ -189,22 +197,3 @@ main {
 .delete-btn {
     background-color: #B82714;
 }
-
-/*.complete-btn {
-    /*background-color: rgba(92, 164, 169, 0.5);
-}*/
-
-/*NEW BOOK BUTTON*/
-/*.btn-container {
-    margin: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}*/
-
-/*#btn-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}*/
-

@@ -6,59 +6,63 @@ const formTitle = document.querySelector("#title");
 const formAuthor = document.querySelector("#author");
 const formPages = document.querySelector("#pages");
 const formRead = document.querySelector("#read");
+const formImg = document.querySelector("#cover-img")
 
 //Book object constructor
-function Book(title, author, pages, read) {
-    this.img = '<i class="fas fa-book"></i>'
+function Book(img, title, author, pages, read) {
+    this.img = img;
+    //'<i class="fas fa-book"></i>'
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
     this.info = function() {
         if (this.read == "yes") {
-            return `<b>Title:</b> ${this.title}<br><br>
-            <b>Author:</b> ${this.author}<br><br>
-            <b>No of Pages:</b> ${this.pages} page(s)<br><br>
-            The book is completed`;
+            return `${this.img}
+            <p><b>Title:</b> ${this.title}</p>
+            <p><b>Author:</b> ${this.author}</p>
+            <p><b>No of Pages:</b> ${this.pages} page(s)</p>
+            <p>The book is completed</p>`;
         }
         else {
-            return `<b>Title:</b> ${this.title}<br><br>
-            <b>Author:</b> ${this.author}<br><br>
-            <b>No of Pages:</b> ${this.pages} page(s)<br><br>
-            The book is not completed`;
+            return `${this.img}
+            <p><b>Title:</b> ${this.title}</p>
+            <p><b>Author:</b> ${this.author}</p>
+            <p><b>No of Pages:</b> ${this.pages} page(s)</p>
+            <p>The book is not completed</p>`;
         } 
     }
 }
 
-myLibrary.push(new Book("Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "yes"));
+myLibrary.push(new Book(`<img src="https://upload.wikimedia.org/wikipedia/en/6/6b/Harry_Potter_and_the_Philosopher%27s_Stone_Book_Cover.jpg">`,"Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "yes"));
 displayBook();
 
 function addBookToLibrary() {
+    if(formImg.value == "") {
+        img = '<i id="no-img" class="fas fa-book"></i>'
+    }
+    else {
+        img = `<img src="${formImg.value}">`;
+    }
+    
     title = formTitle.value;
     author = formAuthor.value;
     pages = formPages.value;
     read = formRead.value;
-    myLibrary.push(new Book(title, author, pages, read));
+    myLibrary.push(new Book(img, title, author, pages, read));
 }
 
 function displayBook() {
     item = myLibrary[myLibrary.length - 1];
-
     item.node = document.createElement("div");
     item.node.classList.add("book-container");
-    item.text = document.createElement("p");
-    item.text.classList.add("book-text");
-    item.text.innerHTML = item.info();
-    item.node.appendChild(item.text);
+    item.node.innerHTML = item.info();
     container.appendChild(item.node);
     addDeleteBtn(item);
     addCompleteBtn(item);
-    /*myLibrary.forEach(item => {
-        
-    })*/
 }
 
-//New Book button
+//Open and close the form
 const newBookBtn = document.querySelector(".new-book-btn");
 const popupForm = document.querySelector(".popup-form");
 const formBackground = document.querySelector(".transparent");
@@ -77,13 +81,14 @@ function closeForm() {
     formBackground.style.display = "none";
 }
 
-//Form button
+//Add a new book form button
 const formBtn = document.querySelector(".form-btn");
 
 formBtn.addEventListener("click", function() {
     addBookToLibrary();
     initializeForm();
     displayBook();
+    closeForm();
 });
 
 function initializeForm() {
