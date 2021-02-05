@@ -1,5 +1,12 @@
+//VARIABLES
 const container = document.querySelector(".main-container");
-let myLibrary = [];
+const newBookBtn = document.querySelector(".new-book-btn");
+const formCloseBtn = document.querySelector(".close-btn");
+const formPopup = document.querySelector(".popup-form");
+const formBackground = document.querySelector(".transparent");
+const formAddBtn = document.querySelector(".form-btn");
+const formEditBtn = document.querySelector(".form-edit-btn");
+const libraryLog = document.querySelector(".library-log");
 
 //Form variables
 const formTitle = document.querySelector("#title");
@@ -8,48 +15,64 @@ const formPages = document.querySelector("#pages");
 const formRead = document.querySelector("#read");
 const formImg = document.querySelector("#cover-img")
 
-const formEditBtn = document.querySelector(".form-edit-btn");
-const formBtn = document.querySelector(".form-btn");
+//Initialize the library array
+let index = undefined;
+let myLibrary = [];
 
-//Open and close the form
-const newBookBtn = document.querySelector(".new-book-btn");
-const popupForm = document.querySelector(".popup-form");
-const formBackground = document.querySelector(".transparent");
-const closeFormBtn = document.querySelector(".close-btn");
+//Initialize library log
+libraryLog.innerHTML = `<p><b>Total Books:</b> 0</p>
+<p><b>Books Read:</b> 0</p>`;
 
+//===================================================
+
+//Local Storage
+if(!localStorage.getItem('library')) {
+    localStorage.setItem('library', myLibrary);
+    console.log("test1");
+    console.log(localStorage.library);
+    console.log(myLibrary)
+} 
+else {
+    myLibrary = JSON.parse(localStorage.getItem('library'));
+    showAllCards();
+    console.log("test2");
+    console.log(localStorage.library);
+    console.log(myLibrary)
+}
+
+function updateLocalStorage() {
+    localStorage.setItem('library', JSON.stringify(myLibrary));
+    console.log("test3");
+    console.log(localStorage.library);
+    console.log(myLibrary)
+}
+
+//===================================================
+
+//Set a button to open the add book form
 newBookBtn.addEventListener("click", function() {
+    initializeForm();
     openForm();
-    formBtn.style.display = "block";
+    //On the form, hides the edit button and shows the add button
+    formAddBtn.style.display = "block";
     formEditBtn.style.display = "none";
 });
-closeFormBtn.addEventListener("click", closeForm);
 
+formCloseBtn.addEventListener("click", closeForm);
+
+//Makes the form appear
 function openForm() {
-    popupForm.style.display = "block";
+    formPopup.style.display = "block";
     formBackground.style.display = "block";
 }
 
+//Hides the form
 function closeForm() {
-    popupForm.style.display = "none";
+    formPopup.style.display = "none";
     formBackground.style.display = "none";
 }
 
-//Add a book
-formBtn.addEventListener("click", function() {
-    addBookToLibrary();
-    initializeForm();
-    displayBook();
-    closeForm();
-});
-
-function initializeForm() {
-    formTitle.value = "";
-    formAuthor.value = "";
-    formPages.value = "";
-    formRead.value = "yes";
-}
-
-
+//===================================================
 
 //Book object constructor
 function Book(img, title, author, pages, read) {
@@ -58,165 +81,255 @@ function Book(img, title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
-    this.info = function() {
-        if (this.read == "yes") {
-            return `${this.img}
-            <p><b>Title:</b> ${this.title}</p>
-            <p><b>Author:</b> ${this.author}</p>
-            <p><b>No of Pages:</b> ${this.pages} page(s)</p>
-            <p>The book is completed</p>`;
-        }
-        else {
-            return `${this.img}
-            <p><b>Title:</b> ${this.title}</p>
-            <p><b>Author:</b> ${this.author}</p>
-            <p><b>No of Pages:</b> ${this.pages} page(s)</p>
-            <p>The book is not completed</p>`;
-        } 
+}
+
+function bookInfo(item) {
+    //Check if an image link was provided
+    if(item.img == "") {
+        auxImg = '<i id="no-img" class="fas fa-book"></i>'
+    }
+    else {
+        auxImg = `<img src="${img}">`;
+    }
+
+    if (item.read == "yes") {
+        return `${auxImg}
+        <p><b>Title:</b> ${item.title}</p>
+        <p><b>Author:</b> ${item.author}</p>
+        <p><b>No of Pages:</b> ${item.pages} page(s)</p>
+        <p>The book is completed</p>`;
+    }
+    else {
+        return `${auxImg}
+        <p><b>Title:</b> ${item.title}</p>
+        <p><b>Author:</b> ${item.author}</p>
+        <p><b>No of Pages:</b> ${item.pages} page(s)</p>
+        <p>The book is not completed</p>`;
     }
 }
 
-myLibrary.push(new Book(`<img src="https://upload.wikimedia.org/wikipedia/en/6/6b/Harry_Potter_and_the_Philosopher%27s_Stone_Book_Cover.jpg">`,"Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "yes"));
-displayBook();
+//===================================================
 
+//Adding a new book to the library
+formAddBtn.addEventListener("click", function() {
+    addBookToLibrary();
+    initializeForm();
+    closeForm();
+
+    let allCards = document.querySelectorAll(".book-container");
+    if (allCards.length !== 0) {
+        deleteAllBooks();
+    }
+
+    displayAllBooks();
+    addAllBtn();
+
+    //Add buttons event listeners
+    addDeleteEvent();
+    addCompletedEvent();
+    addEditEvent();
+
+    logLibraryInfo()
+    updateLocalStorage()
+});
+
+//Adds a new book object to the library array
 function addBookToLibrary() {
-    if(formImg.value == "") {
+    /*if(formImg.value == "") {
         img = '<i id="no-img" class="fas fa-book"></i>'
     }
     else {
         img = `<img src="${formImg.value}">`;
-    }
+    }*/
     
-    title = formTitle.value;
-    author = formAuthor.value;
-    pages = formPages.value;
-    read = formRead.value;
-    myLibrary.push(new Book(img, title, author, pages, read));
+    myLibrary.push(new Book(formImg.value, formTitle.value, formAuthor.value, formPages.value, formRead.value));
 }
 
-function displayBook() {
-    item = myLibrary[myLibrary.length - 1];
-    item.node = document.createElement("div");
-    item.node.classList.add("book-container");
-    item.infoNode = document.createElement("div");
-    item.infoNode.classList.add("info-container");
-    item.infoNode.innerHTML = item.info();
-    item.node.appendChild(item.infoNode);
-    container.appendChild(item.node);
-    addDeleteBtn(item);
-    addEditBtn(item);
-    addCompleteBtn(item);
-    logLibraryInfo();
+//Resets the form to its initial values
+function initializeForm() {
+    formImg.value = "";
+    formTitle.value = "";
+    formAuthor.value = "";
+    formPages.value = "";
+    formRead.value = "yes";
 }
 
-
-//Delete button
-function addDeleteBtn(item) {
-    item.deleteBtn = document.createElement("button");
-    item.deleteBtn.classList.add("delete-btn");
-    item.deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-    item.node.appendChild(item.deleteBtn);
-
-    //Add event listener
-    addDeleteEvent(item);
-}
-
-function addDeleteEvent(item) {
-    item.deleteBtn.addEventListener("click", function() {
-        index = myLibrary.indexOf(item);
-        container.removeChild(item.node);
-        myLibrary.splice(index, 1);
+//===================================================
+//Display all cards on the screen
+function displayAllBooks() {
+    myLibrary.forEach(item => {
+        let bookContainer = document.createElement("div");
+        bookContainer.classList.add("book-container");
+        let infoContainer = document.createElement("div");
+        infoContainer.classList.add("info-container");
+        //Adding the info text
+        infoContainer.innerHTML = bookInfo(item);
+        //Appending the elements to their parents
+        bookContainer.appendChild(infoContainer);
+        container.appendChild(bookContainer);
     })
 }
 
-//Edit button
-function addEditBtn(item) {
-    item.editBtn = document.createElement("button");
-    item.editBtn.classList.add("edit-btn");
-    item.editBtn.innerHTML = '<i class="fas fa-edit"></i>';
-    item.node.appendChild(item.editBtn);
+//Delete all cards from the screen
+function deleteAllBooks() {
+    let allCards = document.querySelectorAll(".book-container");
 
-    //Add event listener
-    item.editBtn.addEventListener("click", function() {
-        addEditEvent(item); 
-    });
+    allCards.forEach(card => {
+        container.removeChild(card);
+    })
 }
 
-function addEditEvent(item) {
-    item.editBtn.addEventListener("click", function() {
-        openForm();
-        formImg.value = item.img.replace('<img src="', "").replace('">', "");
-        formTitle.value = item.title;
-        formAuthor.value = item.author;
-        formPages.value = item.pages;
-        formRead.value = item.read;
+//===================================================
 
-        formBtn.style.display = "none";
-        formEditBtn.style.display = "block";
+//Add all buttons to all cards
+function addAllBtn() {
+    let allCards = document.querySelectorAll(".book-container");
+    
+    allCards.forEach(card => {
+        addDeleteBtn(card);
+        addEditBtn(card);
+        addCompleteBtn(card);
+    })
+}
 
-        formEditBtn.addEventListener("click", function() {
-            editBook(item, formImg.value, formTitle.value, formAuthor.value, formPages.value, formRead.value);
+//Add a delete button to all cards
+function addDeleteBtn(card) {
+    let deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    card.appendChild(deleteBtn);
+}
+
+//Add an edit button to all cards
+function addEditBtn(card) {
+    let editBtn = document.createElement("button");
+    editBtn.classList.add("edit-btn");
+    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+    card.appendChild(editBtn);
+}
+
+//Add a completed button to all cards
+function addCompleteBtn(card) {
+    let completeBtn = document.createElement("button");
+    completeBtn.classList.add("complete-btn");
+
+    let allText = card.querySelectorAll("p");
+    let lastText = allText[allText.length - 1];
+
+    //Changes the button style depending if the book was read or not
+    if (lastText.innerText == "The book is completed") {
+        completeBtn.style.backgroundColor = "lightgray";
+        completeBtn.innerHTML = '<i class="fas fa-times"></i>'
+    }
+    else {
+        completeBtn.style.backgroundColor = "#5CA4A9";
+        completeBtn.innerHTML = '<i class="fas fa-check"></i>';
+    }
+    //Appendindg the element
+    card.appendChild(completeBtn);
+}
+
+//===================================================
+//Add event listeners to all card buttons
+//Add delete event listener
+function addDeleteEvent() {
+    let allDeleteBtn = Array.from(document.querySelectorAll(".delete-btn"));
+
+    allDeleteBtn.forEach(button => {
+        button.addEventListener("click", function() {
+            let allCards = document.querySelectorAll(".book-container");
+            let index = allDeleteBtn.indexOf(button);
+            container.removeChild(allCards[index]);
+            myLibrary.splice(index, 1);
         })
     })
 }
 
-function editBook(item, img, title, author, pages, read) {
-    item.img = `<img src="${img}">`;
-    item.title = title;
-    item.author = author;
-    item.pages = pages;
-    item.read = read;
-    item.infoNode.innerHTML = item.info();
-    closeForm();
-}
+//Add edit event listener
+function addEditEvent() {
+    let allEditBtn = Array.from(document.querySelectorAll(".edit-btn"));
+    
+    allEditBtn.forEach(button => {
+        button.addEventListener("click", function() {
+            openForm();
+            //On the form, shows the edit button and hides the add button
+            formAddBtn.style.display = "none";
+            formEditBtn.style.display = "block";
 
-//Completed button
-function addCompleteBtn(item) {
-    item.completeBtn = document.createElement("button");
-    item.completeBtn.classList.add("complete-btn");
-
-    if (item.read == "no") {
-        incomplete(item);
-    }
-    else {
-        completed(item);
-    }
-
-    item.node.appendChild(item.completeBtn);
-
-    //Add event listener
-    addCompleteEvent(item);
-}
-
-function addCompleteEvent(item) {
-    item.completeBtn.addEventListener("click", function() {
-        if (item.read == "no") {
-            item.read = "yes";
-            completed(item);
-        }
-        else {
-            item.read = "no";
-            incomplete(item);
-        }
-        item.infoNode.innerHTML = item.info();
-        logLibraryInfo();
+            index = allEditBtn.indexOf(button)
+            console.log(index);
+            showValues(index);
+        })
     })
 }
 
-function completed(item) {
-    item.completeBtn.style.backgroundColor = "lightgray";
-    item.completeBtn.innerHTML = '<i class="fas fa-times"></i>'
+function showValues(index) {
+    formImg.value = myLibrary[index].img;
+    formTitle.value = myLibrary[index].title;
+    formAuthor.value = myLibrary[index].author;
+    formPages.value = myLibrary[index].pages;
+    formRead.value = myLibrary[index].read;
 }
 
-function incomplete(item) {
-    item.completeBtn.style.backgroundColor = "#5CA4A9";
-    item.completeBtn.innerHTML = '<i class="fas fa-check"></i>';
+//Add event listener to the form edit button
+formEditBtn.addEventListener("click", function() {
+    myLibrary[index].img = formImg.value;
+    myLibrary[index].title = formTitle.value;
+    myLibrary[index].author = formAuthor.value;
+    myLibrary[index].pages = formPages.value;
+    myLibrary[index].read = formRead.value;
+
+    closeForm();
+    initializeForm();
+
+    showAllCards();
+})
+
+//Add completed event listener
+function addCompletedEvent() {
+    let allCompleteBtn = Array.from(document.querySelectorAll(".complete-btn"));
+
+    allCompleteBtn.forEach(button => {
+        button.addEventListener("click", function() {
+            let index = allCompleteBtn.indexOf(button);
+
+            if (myLibrary[index].read == "no") {
+                myLibrary[index].read = "yes";
+                button.style.backgroundColor = "lightgray";
+                button.innerHTML = '<i class="fas fa-times"></i>'
+            }
+            else {
+                myLibrary[index].read = "no";
+                button.style.backgroundColor = "#5CA4A9";
+                button.innerHTML = '<i class="fas fa-check"></i>';
+            }
+
+            showAllCards();
+        })
+    })
 }
 
-//Library Log
+//===================================================
+
+//Show all cards with buttons
+function showAllCards() {
+    deleteAllBooks();
+    displayAllBooks();
+    addAllBtn();
+    
+    addDeleteEvent();
+    addCompletedEvent();
+    addEditEvent();
+
+    logLibraryInfo()
+    updateLocalStorage()
+}
+
+//===================================================
+
+//Show library log info
 function logLibraryInfo() {
-    const libraryLog = document.querySelector(".library-log");
-
+    
     totalBooks = myLibrary.length;
     booksRead = myLibrary.reduce((total, item) => {
         if (item.read == "yes") {
@@ -230,3 +343,5 @@ function logLibraryInfo() {
     libraryLog.innerHTML = `<p><b>Total Books:</b> ${totalBooks}</p>
     <p><b>Books Read:</b> ${booksRead}</p>`;
 }
+
+//===================================================

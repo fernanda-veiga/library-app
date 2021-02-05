@@ -258,6 +258,10 @@ main {
     .book-container img, .book-container #no-img {
         height: 100px;
     }
+
+    .book-container #no-img {
+        font-size: 90px;
+    }
 }
 
 @media (max-width: 650px) {
