@@ -8,10 +8,45 @@ const formPages = document.querySelector("#pages");
 const formRead = document.querySelector("#read");
 const formImg = document.querySelector("#cover-img")
 
+//Open and close the form
+const newBookBtn = document.querySelector(".new-book-btn");
+const popupForm = document.querySelector(".popup-form");
+const formBackground = document.querySelector(".transparent");
+const closeFormBtn = document.querySelector(".close-btn");
+
+newBookBtn.addEventListener("click", openForm);
+closeFormBtn.addEventListener("click", closeForm);
+
+function openForm() {
+    popupForm.style.display = "block";
+    formBackground.style.display = "block";
+}
+
+function closeForm() {
+    popupForm.style.display = "none";
+    formBackground.style.display = "none";
+}
+
+//Add a book
+const formBtn = document.querySelector(".form-btn");
+
+formBtn.addEventListener("click", function() {
+    addBookToLibrary();
+    initializeForm();
+    displayBook();
+    closeForm();
+});
+
+function initializeForm() {
+    formTitle.value = "";
+    formAuthor.value = "";
+    formPages.value = "";
+    formRead.value = "yes";
+}
+
 //Book object constructor
 function Book(img, title, author, pages, read) {
     this.img = img;
-    //'<i class="fas fa-book"></i>'
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -56,47 +91,18 @@ function displayBook() {
     item = myLibrary[myLibrary.length - 1];
     item.node = document.createElement("div");
     item.node.classList.add("book-container");
-    item.node.innerHTML = item.info();
+    item.infoNode = document.createElement("div");
+    item.infoNode.classList.add("info-container");
+    item.infoNode.innerHTML = item.info();
+    item.node.appendChild(item.infoNode);
     container.appendChild(item.node);
     addDeleteBtn(item);
     addCompleteBtn(item);
+    logLibraryInfo();
 }
 
-//Open and close the form
-const newBookBtn = document.querySelector(".new-book-btn");
-const popupForm = document.querySelector(".popup-form");
-const formBackground = document.querySelector(".transparent");
-const closeFormBtn = document.querySelector(".close-btn");
 
-newBookBtn.addEventListener("click", openForm);
-closeFormBtn.addEventListener("click", closeForm);
 
-function openForm() {
-    popupForm.style.display = "block";
-    formBackground.style.display = "block";
-}
-
-function closeForm() {
-    popupForm.style.display = "none";
-    formBackground.style.display = "none";
-}
-
-//Add a new book form button
-const formBtn = document.querySelector(".form-btn");
-
-formBtn.addEventListener("click", function() {
-    addBookToLibrary();
-    initializeForm();
-    displayBook();
-    closeForm();
-});
-
-function initializeForm() {
-    formTitle.value = "";
-    formAuthor.value = "";
-    formPages.value = "";
-    formRead.value = "yes";
-}
 
 //Delete button
 function addDeleteBtn(item) {
@@ -138,16 +144,15 @@ function addCompleteBtn(item) {
 function addCompleteEvent(item) {
     item.completeBtn.addEventListener("click", function() {
         if (item.read == "no") {
-            console.log("yes")
             item.read = "yes";
             completed(item);
         }
         else {
-            console.log("no")
             item.read = "no";
             incomplete(item);
         }
-        item.text.innerHTML = item.info();
+        item.infoNode.innerHTML = item.info();
+        logLibraryInfo();
     })
 }
 
@@ -159,4 +164,22 @@ function completed(item) {
 function incomplete(item) {
     item.completeBtn.style.backgroundColor = "#5CA4A9";
     item.completeBtn.innerHTML = '<i class="fas fa-check"></i> &nbsp; Complete';
+}
+
+//Library Log
+function logLibraryInfo() {
+    const libraryLog = document.querySelector(".library-log");
+
+    totalBooks = myLibrary.length;
+    booksRead = myLibrary.reduce((total, item) => {
+        if (item.read == "yes") {
+            return total + 1;
+        }
+        else {
+            return total;
+        }
+    }, 0)
+
+    libraryLog.innerHTML = `<p><b>Total Books:</b> ${totalBooks}</p>
+    <p><b>Books Read:</b> ${booksRead}</p>`;
 }
