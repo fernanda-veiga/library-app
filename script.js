@@ -8,13 +8,20 @@ const formPages = document.querySelector("#pages");
 const formRead = document.querySelector("#read");
 const formImg = document.querySelector("#cover-img")
 
+const formEditBtn = document.querySelector(".form-edit-btn");
+const formBtn = document.querySelector(".form-btn");
+
 //Open and close the form
 const newBookBtn = document.querySelector(".new-book-btn");
 const popupForm = document.querySelector(".popup-form");
 const formBackground = document.querySelector(".transparent");
 const closeFormBtn = document.querySelector(".close-btn");
 
-newBookBtn.addEventListener("click", openForm);
+newBookBtn.addEventListener("click", function() {
+    openForm();
+    formBtn.style.display = "block";
+    formEditBtn.style.display = "none";
+});
 closeFormBtn.addEventListener("click", closeForm);
 
 function openForm() {
@@ -28,8 +35,6 @@ function closeForm() {
 }
 
 //Add a book
-const formBtn = document.querySelector(".form-btn");
-
 formBtn.addEventListener("click", function() {
     addBookToLibrary();
     initializeForm();
@@ -43,6 +48,8 @@ function initializeForm() {
     formPages.value = "";
     formRead.value = "yes";
 }
+
+
 
 //Book object constructor
 function Book(img, title, author, pages, read) {
@@ -97,11 +104,10 @@ function displayBook() {
     item.node.appendChild(item.infoNode);
     container.appendChild(item.node);
     addDeleteBtn(item);
+    addEditBtn(item);
     addCompleteBtn(item);
     logLibraryInfo();
 }
-
-
 
 
 //Delete button
@@ -121,6 +127,48 @@ function addDeleteEvent(item) {
         container.removeChild(item.node);
         myLibrary.splice(index, 1);
     })
+}
+
+//Edit button
+function addEditBtn(item) {
+    item.editBtn = document.createElement("button");
+    item.editBtn.classList.add("delete-btn");
+    item.editBtn.innerHTML = '<i class="fas fa-edit"></i> &nbsp; Edit';
+    item.node.appendChild(item.editBtn);
+
+    //Add event listener
+    item.editBtn.addEventListener("click", function() {
+        addEditEvent(item); 
+    });
+}
+
+function addEditEvent(item) {
+    item.editBtn.addEventListener("click", function() {
+        openForm();
+        formImg.value = item.img.replace('<img src="', "").replace('">', "");
+        formTitle.value = item.title;
+        formAuthor.value = item.author;
+        formPages.value = item.pages;
+        formRead.value = item.read;
+
+        formBtn.style.display = "none";
+        formEditBtn.style.display = "block";
+
+        formEditBtn.addEventListener("click", function() {
+            editBook(item, formImg.value, formTitle.value, formAuthor.value, formPages.value, formRead.value);
+        })
+        
+    })
+}
+
+function editBook(item, img, title, author, pages, read) {
+    item.img = `<img src="${img}">`;
+    item.title = title;
+    item.author = author;
+    item.pages = pages;
+    item.read = read;
+    item.infoNode.innerHTML = item.info();
+    closeForm();
 }
 
 //Completed button

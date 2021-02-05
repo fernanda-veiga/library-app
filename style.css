@@ -121,7 +121,7 @@ header {
     outline: none;
 }
 
-label, input, select, .form-btn {
+label, input, select, .form-btn, .form-edit-btn {
     font-family: 'Merriweather', serif;
     outline: none;
 }
@@ -139,7 +139,7 @@ input, select {
     font-size: 14px;
 }
 
-.form-btn {
+.form-btn, .form-edit-btn {
     background-color: #5CA4A9;
     border: none;
     padding: 10px;
