@@ -18,12 +18,9 @@ const formImg = document.querySelector("#cover-img")
 //Initialize the library array
 let index = undefined;
 let myLibrary = [];
-
 //Add a book example to the library
-/*myLibrary.push(new Book("https://upload.wikimedia.org/wikipedia/en/6/6b/Harry_Potter_and_the_Philosopher%27s_Stone_Book_Cover.jpg", "Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "no"));
-myLibrary.push(new Book("https://upload.wikimedia.org/wikipedia/en/d/dc/A_Song_of_Ice_and_Fire_book_collection_box_set_cover.jpg", "A Song of Ice and Fire", "George R. R. Martin", "694", "yes"));*/
-
-/*showAllCards();*/
+myLibrary.push(new Book("https://upload.wikimedia.org/wikipedia/en/6/6b/Harry_Potter_and_the_Philosopher%27s_Stone_Book_Cover.jpg", "Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "no"));
+myLibrary.push(new Book("https://upload.wikimedia.org/wikipedia/en/d/dc/A_Song_of_Ice_and_Fire_book_collection_box_set_cover.jpg", "A Song of Ice and Fire", "George R. R. Martin", "694", "yes"));
 
 //Initialize library log
 libraryLog.innerHTML = `<p><b>Total Books:</b> 0</p>
@@ -44,10 +41,7 @@ function updateLocalStorage() {
     localStorage.setItem('library', JSON.stringify(myLibrary));
 }
 
-//===================================================
-
-
-
+showAllCards();
 
 //===================================================
 
@@ -91,7 +85,7 @@ function bookInfo(item) {
         auxImg = '<i id="no-img" class="fas fa-book"></i>'
     }
     else {
-        auxImg = `<img src="${img}">`;
+        auxImg = `<img src="${item.img}">`;
     }
 
     if (item.read == "yes") {
