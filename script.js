@@ -19,6 +19,12 @@ const formImg = document.querySelector("#cover-img")
 let index = undefined;
 let myLibrary = [];
 
+//Add a book example to the library
+/*myLibrary.push(new Book("https://upload.wikimedia.org/wikipedia/en/6/6b/Harry_Potter_and_the_Philosopher%27s_Stone_Book_Cover.jpg", "Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "no"));
+myLibrary.push(new Book("https://upload.wikimedia.org/wikipedia/en/d/dc/A_Song_of_Ice_and_Fire_book_collection_box_set_cover.jpg", "A Song of Ice and Fire", "George R. R. Martin", "694", "yes"));*/
+
+/*showAllCards();*/
+
 //Initialize library log
 libraryLog.innerHTML = `<p><b>Total Books:</b> 0</p>
 <p><b>Books Read:</b> 0</p>`;
@@ -28,24 +34,20 @@ libraryLog.innerHTML = `<p><b>Total Books:</b> 0</p>
 //Local Storage
 if(!localStorage.getItem('library')) {
     localStorage.setItem('library', myLibrary);
-    console.log("test1");
-    console.log(localStorage.library);
-    console.log(myLibrary)
 } 
 else {
     myLibrary = JSON.parse(localStorage.getItem('library'));
     showAllCards();
-    console.log("test2");
-    console.log(localStorage.library);
-    console.log(myLibrary)
 }
 
 function updateLocalStorage() {
     localStorage.setItem('library', JSON.stringify(myLibrary));
-    console.log("test3");
-    console.log(localStorage.library);
-    console.log(myLibrary)
 }
+
+//===================================================
+
+
+
 
 //===================================================
 
@@ -134,14 +136,7 @@ formAddBtn.addEventListener("click", function() {
 });
 
 //Adds a new book object to the library array
-function addBookToLibrary() {
-    /*if(formImg.value == "") {
-        img = '<i id="no-img" class="fas fa-book"></i>'
-    }
-    else {
-        img = `<img src="${formImg.value}">`;
-    }*/
-    
+function addBookToLibrary() {    
     myLibrary.push(new Book(formImg.value, formTitle.value, formAuthor.value, formPages.value, formRead.value));
 }
 
@@ -241,6 +236,7 @@ function addDeleteEvent() {
             let index = allDeleteBtn.indexOf(button);
             container.removeChild(allCards[index]);
             myLibrary.splice(index, 1);
+            showAllCards();
         })
     })
 }
@@ -321,8 +317,8 @@ function showAllCards() {
     addCompletedEvent();
     addEditEvent();
 
-    logLibraryInfo()
-    updateLocalStorage()
+    logLibraryInfo();
+    updateLocalStorage();
 }
 
 //===================================================
