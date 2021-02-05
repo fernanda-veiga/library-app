@@ -14,7 +14,6 @@ body {
 header {
     /*Container*/
     width: 100vw;
-    height: 90px;
     background-color: #DBE0D5;
     box-shadow: 0 0 2px gray;
     padding: 20px 50px;
@@ -137,6 +136,7 @@ input, select {
     margin-bottom: 15px;
     padding: 10px;
     font-size: 14px;
+    border: 1px solid lightgray;
 }
 
 .form-btn, .form-edit-btn {
@@ -222,4 +222,46 @@ main {
 
 .edit-btn {
     background-color: #5CA4A9;
+}
+
+/*RESPONSIVITY*/
+@media (max-width: 800px) {
+    header {
+        min-width: 380px;
+        flex-direction: column;
+    }
+
+    .logo {
+        margin-bottom: 20px;
+        font-size: 1.5em;
+    }
+
+    main {
+        min-width: 380px;
+    }
+
+    .library-log p {
+        font-size: 12px;
+    }
+
+    .new-book-btn {
+        width: 150px;
+        font-size: 14px;
+    }
+
+    .book-container {
+        min-width: 200px;
+        max-width: 200px;
+        height: 300px;
+    }
+
+    .book-container img, .book-container #no-img {
+        height: 100px;
+    }
+}
+
+@media (max-width: 650px) {
+    .popup-form {
+        width: 100vw;
+    }
 }
