@@ -31,7 +31,7 @@ function Book(title, author, pages, read) {
 }
 
 myLibrary.push(new Book("Harry Potter and the Philosopher's Stone", "J. K. Rowling", "309", "yes"));
-displayBooks();
+displayBook();
 
 function addBookToLibrary() {
     title = formTitle.value;
@@ -41,18 +41,21 @@ function addBookToLibrary() {
     myLibrary.push(new Book(title, author, pages, read));
 }
 
-function displayBooks() {
-    myLibrary.forEach(item => {
-        item.node = document.createElement("div");
-        item.node.classList.add("book-container");
-        item.text = document.createElement("p");
-        item.text.classList.add("book-text");
-        item.text.innerHTML = item.info();
-        item.node.appendChild(item.text);
-        container.appendChild(item.node);
-        addDeleteBtn(item);
-        addCompleteBtn(item);
-    })
+function displayBook() {
+    item = myLibrary[myLibrary.length - 1];
+
+    item.node = document.createElement("div");
+    item.node.classList.add("book-container");
+    item.text = document.createElement("p");
+    item.text.classList.add("book-text");
+    item.text.innerHTML = item.info();
+    item.node.appendChild(item.text);
+    container.appendChild(item.node);
+    addDeleteBtn(item);
+    addCompleteBtn(item);
+    /*myLibrary.forEach(item => {
+        
+    })*/
 }
 
 //New Book button
@@ -86,7 +89,7 @@ const formBtn = document.querySelector(".form-btn");
 formBtn.addEventListener("click", function() {
     addBookToLibrary();
     initializeForm();
-    displayBooks();
+    displayBook();
 });
 
 function initializeForm() {
